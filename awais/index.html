@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ABA Technologies</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a href="#">Home</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Services</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</nav>
+		<h1>Welcome to ABA Technologies</h1>
+		<button id="cta-btn">Get Started</button>
+	</header>
+	
+	<main>
+		<section class="features">
+			<h2>Our Features</h2>
+			<div class="card-container">
+				<div class="card">
+					<img src="https://via.placeholder.com/150x150" alt="Feature 1">
+					<h3>Feature 1</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at lacus euismod, convallis mi vitae, venenatis urna.</p>
+				</div>
+				<div class="card">
+					<img src="https://via.placeholder.com/150x150" alt="Feature 2">
+					<h3>Feature 2</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at lacus euismod, convallis mi vitae, venenatis urna.</p>
+				</div>
+				<div class="card">
+					<img src="https://via.placeholder.com/150x150" alt="Feature 3">
+					<h3>Feature 3</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at lacus euismod, convallis mi vitae, venenatis urna.</p>
+				</div>
+			</div>
+		</section>
+		
+		<section class="testimonial">
+			<h2>What Our Clients Say</h2>
+			<blockquote>
+				<p>"I love this product! It has changed my life."</p>
+				<cite>John Smith, CEO of ABC Company</cite>
+			</blockquote>
+		</section>
+	</main>
+	
+	<footer>
+		<p>&copy; 2023 ABA Technologies</p>
+	</footer>
+
+	<script>
+		// Define a function to handle the click event on the button
+		function handleClick() {
+			alert("Thank you for your interest!");
+		}
+
+		// Add an event listener to the button
+		var btn = document.getElementById("cta-btn");
+		btn.addEventListener("click", handleClick);
+	</script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IMA SDK Video Player with Scrolling Effect</title>
+  <style>
+    /* Style for the article */
+    article {
+      width: 80%;
+      margin: 0 auto;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+
+    /* Style for the video container inside the article */
+    #articleVideoContainer {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 * 100%) */
+    }
+
+    /* Style for the video player */
+    #videoPlayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Style for the scrolling effect */
+    #videoPlayer.fixed {
+      position: fixed;
+      top: 80%;
+      left: 80%;
+
+      width: 200px; /* Adjust the width as needed */
+      height: 112.5px; /* Adjust the height to maintain 16:9 aspect ratio */
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main content container -->
+  <article>
+    <h1>Sample Article</h1>
+    <div id="articleVideoContainer">
+      <video id="videoPlayer" controls autoplay>
+        <source src="/New folder/CTW8T91Z95IBSJIP.mp4" type="video/mp4"> <!-- Replace with the path to your video file -->
+      </video>
+    </div>
+
+    <p>
+      This is a sample article with some content. Scroll down to see the video's scrolling effect!
+    </p>
+  </article>
+
+  <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+  <script>
+    function troubleshootIMASDK() {
+  // Check the ad tag URL.
+  const adTagUrl = document.getElementById('adTagUrl').value;
+  if (!adTagUrl || adTagUrl === '') {
+    alert('Please enter a valid ad tag URL.');
+    return;
+  }
+
+  // Check the IMA SDK settings.
+  const imaSettings = {
+    debug: document.getElementById('debug').checked,
+    autoPlayAdBreaks: document.getElementById('autoPlayAdBreaks').checked,
+    ppid: document.getElementById('ppid').value,
+  };
+
+  // Check the video player.
+  const videoPlayer = document.getElementById('videoPlayer');
+  if (!videoPlayer) {
+    alert('Please create a video player element.');
+    return;
+  }
+
+  // Check the JavaScript console.
+  if (window.console) {
+    console.log('Checking IMA SDK settings...');
+    console.log('Ad tag URL: ' + adTagUrl);
+    console.log('IMA SDK settings: ' + JSON.stringify(imaSettings));
+    console.log('Video player: ' + videoPlayer);
+  }
+
+  // Initialize the IMA SDK.
+  const adDisplayContainer = new google.ima.AdDisplayContainer(videoPlayer);
+  const adsLoader = new google.ima.AdsLoader(adDisplayContainer);
+  adsLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, onAdsManagerLoaded, false);
+  adsLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError, false);
+
+  // Request ads.
+  const adsRequest = new google.ima.AdsRequest();
+  adsRequest.adTagUrl = adTagUrl;
+  adsLoader.requestAds(adsRequest);
+}
+
+function onAdsManagerLoaded(adsManagerLoadedEvent) {
+  const adsManager = adsManagerLoadedEvent.getAdsManager();
+  adsManager.addEventListener(google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED, onContentPauseRequested, false);
+  adsManager.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, onContentResumeRequested, false);
+  adsManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, onAllAdsCompleted, false);
+
+  try {
+    adsManager.init(videoPlayer.clientWidth, videoPlayer.clientHeight, google.ima.ViewMode.NORMAL);
+    adsManager.start();
+  } catch (adError) {
+    // Handle the error logging.
+    console.log(adError);
+  }
+}
+
+function onAdError(adErrorEvent) {
+  // Handle the error logging.
+  console.log(adErrorEvent.getError());
+}
+
+function onContentPauseRequested() {
+  videoPlayer.pause();
+}
+
+function onContentResumeRequested() {
+  videoPlayer.play();
+}
+
+function onAllAdsCompleted() {
+  // Do something after all ads have completed.
+}
+
+window.onload = troubleshootIMASDK;
+    // Set up IMA SDK settings
+    const adTagUrl = 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator='; // Replace with your ad tag URL
+    const imaSettings = {
+      debug: true,
+      autoPlayAdBreaks: true,
+      ppid: 'YOUR_PLAYER_PROFILE_ID', // Replace with your player profile ID
+    };
+
+    // Initialize IMA SDK
+    let videoPlayer;
+    let adsLoaded = false;
+    let adsManager;
+
+    function setupVideoPlayer() {
+      videoPlayer = document.getElementById('videoPlayer');
+    }
+
+    function initIMA() {
+      // Create the ad display container
+      const adDisplayContainer = new google.ima.AdDisplayContainer(videoPlayer);
+
+      // Create the ads loader
+      const adsLoader = new google.ima.AdsLoader(adDisplayContainer);
+
+      // Add event listeners for ads manager loaded and ad error events
+      adsLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, onAdsManagerLoaded, false);
+      adsLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError, false);
+
+      // Request ads
+      const adsRequest = new google.ima.AdsRequest();
+      adsRequest.adTagUrl = adTagUrl;
+      adsLoader.requestAds(adsRequest);
+    }
+
+    function onAdsManagerLoaded(adsManagerLoadedEvent) {
+      adsManager = adsManagerLoadedEvent.getAdsManager();
+      adsManager.addEventListener(google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED, onContentPauseRequested, false);
+      adsManager.addEventListener(google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED, onContentResumeRequested, false);
+      adsManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, onAllAdsCompleted, false);
+
+      try {
+        if (!adsLoaded) {
+          adsLoaded = true;
+          adsManager.init(videoPlayer.clientWidth, videoPlayer.clientHeight, google.ima.ViewMode.NORMAL);
+        }
+        adsManager.start();
+      } catch (adError) {
+        // Play the video without ads if an error occurs
+        console.log("AdsManager could not be started");
+        videoPlayer.play();
+      }
+    }
+
+    function onAdError(adErrorEvent) {
+      // Handle the error logging.
+      console.log(adErrorEvent.getError());
+      if (adsManager) {
+        adsManager.destroy();
+      }
+    }
+
+    function onContentPauseRequested() {
+      videoPlayer.pause();
+    }
+
+    function onContentResumeRequested() {
+      videoPlayer.play();
+    }
+
+    function onAllAdsCompleted() {
+      adsLoaded = false;
+    }
+
+    let prevScrollY = 0;
+
+    // Function to handle scroll event with a delay
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > prevScrollY) {
+        // Scrolling down - apply the scrolling effect
+        videoPlayer.classList.add('fixed');
+      } else {
+        // Scrolling up - revert to the original position
+        videoPlayer.classList.remove('fixed');
+      }
+
+      prevScrollY = currentScrollY;
+    }
+
+    window.addEventListener('scroll', handleScroll);
+
+    window.onload = function() {
+      setupVideoPlayer();
+      initIMA();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+  }
+  
+  #page-content {
+    position: relative;
+    max-width: 640px;
+    margin: 10px auto;
+  }
+  
+  #video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    overflow: hidden; /* Hide video overflow when it floats */
+  }
+  
+  #video-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #ad-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  
+  /* Floating styles when the video is floating */
+  #video-float { 
+    width: 150px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index:100;
+}

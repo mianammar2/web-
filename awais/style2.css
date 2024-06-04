@@ -1,0 +1,14 @@
+#name-input {
+  font-size: 1.2em;
+  padding: 0.5em;
+  margin-right: 1em;
+}
+#submit-button {
+  font-size: 1.2em;
+  padding: 0.5em 1em;
+  background-color: #1E90FF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
